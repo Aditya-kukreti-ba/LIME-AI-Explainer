@@ -16,7 +16,8 @@ from lime.lime_text    import LimeTextExplainer
 from lime.lime_tabular import LimeTabularExplainer
 from lime.lime_image   import LimeImageExplainer
 
-from demo_models    import get_text_model, get_tabular_model
+from cnn_models     import predict_single, make_lime_predict_fn, get_imagenet_labels
+from models         import get_text_model, get_tabular_model
 from openai_wrapper import create_openai_classifier
 
 DARK_BG    = "#0f0f1a"
@@ -102,10 +103,7 @@ def explain_text(text, model_type, openai_key="", task="sentiment analysis",
                 return {"error": "OpenAI API key is required for the OpenAI model."}
             predict_fn = create_openai_classifier(openai_key, task, class_names)
         else:
-            model, vectorizer, class_names = get_text_model(model_type)
-            def predict_fn(texts):
-                X = vectorizer.transform(texts)
-                return model.predict_proba(X)
+            predict_fn, class_names = get_text_model(model_type)
 
         explainer = LimeTextExplainer(class_names=class_names, random_state=42)
         exp = explainer.explain_instance(text, predict_fn, num_features=15,
@@ -180,7 +178,6 @@ def explain_image(image_bytes, model_type="resnet50", n_samples=200, num_feature
         import io as _io
         from PIL import Image
         from skimage.segmentation import mark_boundaries
-        from cnn_models import predict_single, make_lime_predict_fn, get_imagenet_labels
 
         pil_img   = Image.open(_io.BytesIO(image_bytes)).convert("RGB")
         pil_224   = pil_img.resize((224, 224), Image.LANCZOS)

@@ -9,10 +9,10 @@ from __future__ import annotations
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 
-from demo_models    import get_text_model_info, get_tabular_model_info
+from cnn_models     import CNN_MODEL_INFO
+from models         import get_text_model_info, get_tabular_model_info
 from lime_explainer import explain_text, explain_tabular, explain_image
 from openai_wrapper import validate_openai_key
-from cnn_models     import CNN_MODEL_INFO
 
 app = Flask(__name__)
 CORS(app)

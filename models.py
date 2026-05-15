@@ -1,8 +1,14 @@
 """
-demo_models.py
-Pre-trained sklearn demo models for LIME explanations.
-Models are cached in memory after first load to avoid retraining.
+models.py
+Models for LIME explanations.
+Text: real pre-trained transformer (DistilBERT) + 20 Newsgroups classifier.
+Tabular: sklearn models trained on real benchmark datasets.
+Models are cached in memory after first load.
 """
+
+import os
+os.environ.setdefault("USE_TF", "0")
+os.environ.setdefault("USE_FLAX", "0")
 
 from sklearn.datasets import load_iris, load_wine, load_breast_cancer, fetch_20newsgroups
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
@@ -139,20 +145,49 @@ def get_tabular_model_info_by_id(model_id: str):
 
 TEXT_MODEL_INFO = [
     {
-        "id": "newsgroups",
-        "name": "20 Newsgroups Topic Classifier (Logistic Regression)",
-        "description": "Classifies text into four topic categories from the 20 Newsgroups dataset.",
-        "classes": ["hockey", "medicine", "religion", "graphics"],
-        "example": "The NHL game last night was incredible, the goalie made some amazing saves.",
-    },
-    {
         "id": "sentiment",
-        "name": "Sentiment Classifier (Logistic Regression)",
-        "description": "Classifies text as positive or negative sentiment using TF-IDF features.",
+        "name": "Sentiment Analysis (DistilBERT)",
+        "description": "Real pre-trained transformer fine-tuned on Stanford Sentiment Treebank (SST-2). Downloads ~250 MB on first use.",
         "classes": ["negative", "positive"],
         "example": "This product is absolutely fantastic! I love every feature of it.",
     },
+    {
+        "id": "newsgroups",
+        "name": "Topic Classifier — 20 Newsgroups (Logistic Regression + TF-IDF)",
+        "description": "Trained on the real 20 Newsgroups dataset. Classifies text into four topics. Downloads dataset on first use.",
+        "classes": ["hockey", "medicine", "religion", "graphics"],
+        "example": "The NHL game last night was incredible, the goalie made some amazing saves.",
+    },
 ]
+
+
+def _load_hf_sentiment():
+    """DistilBERT fine-tuned on SST-2 — real pre-trained transformer."""
+    key = "text_sentiment"
+    if key in _model_cache:
+        return _model_cache[key]
+
+    from transformers import pipeline as hf_pipeline
+
+    print("[models] Loading DistilBERT sentiment model (downloads ~250 MB on first run)…")
+    pipe = hf_pipeline(
+        "sentiment-analysis",
+        model="distilbert-base-uncased-finetuned-sst-2-english",
+        top_k=None,
+    )
+    class_names = ["negative", "positive"]
+
+    def predict_fn(texts):
+        raw = pipe(list(texts), truncation=True, max_length=512, batch_size=16)
+        out = []
+        for item in raw:
+            scores = {entry["label"].upper(): entry["score"] for entry in item}
+            out.append([scores.get("NEGATIVE", 0.0), scores.get("POSITIVE", 0.0)])
+        return np.array(out, dtype=float)
+
+    result = (predict_fn, class_names)
+    _model_cache[key] = result
+    return result
 
 
 def _load_text_newsgroups():
@@ -168,7 +203,7 @@ def _load_text_newsgroups():
     ]
     class_names = ["hockey", "medicine", "religion", "graphics"]
 
-    print("[demo_models] Downloading 20newsgroups (first run only)…")
+    print("[models] Downloading 20 Newsgroups dataset (first run only)…")
     train = fetch_20newsgroups(
         subset="train", categories=categories,
         remove=("headers", "footers", "quotes"),
@@ -178,72 +213,22 @@ def _load_text_newsgroups():
     model = LogisticRegression(max_iter=1000, C=1.0, random_state=42)
     model.fit(X, train.target)
 
-    result = (model, vectorizer, class_names)
-    _model_cache[key] = result
-    return result
+    def predict_fn(texts):
+        return model.predict_proba(vectorizer.transform(texts))
 
-
-def _load_text_sentiment():
-    """Tiny hand-crafted sentiment model trained on synthetic data for demo."""
-    key = "text_sentiment"
-    if key in _model_cache:
-        return _model_cache[key]
-
-    positive_texts = [
-        "This is absolutely wonderful and amazing",
-        "I love this product it is fantastic and great",
-        "Excellent quality, very happy with my purchase",
-        "Outstanding performance, highly recommend",
-        "Best thing I have ever bought, superb",
-        "Brilliant, awesome, incredible experience",
-        "Perfect, delightful, beautiful result",
-        "Great value, top quality, very satisfied",
-        "Loved it, fantastic service, will buy again",
-        "Exceptional, remarkable, truly impressive",
-        "Wonderful experience, very pleased overall",
-        "Superb quality and amazing customer support",
-        "Highly impressed with the excellent results",
-        "Fantastic product that exceeded expectations",
-        "Brilliant design and outstanding performance",
-    ]
-    negative_texts = [
-        "This is terrible and awful, I hate it",
-        "Worst product ever, completely useless junk",
-        "Disappointed and frustrated, poor quality",
-        "Horrible experience, do not recommend at all",
-        "Broken on arrival, disgusting customer service",
-        "Terrible waste of money, very disappointed",
-        "Awful quality, stopped working after a day",
-        "Dreadful product, absolutely not worth it",
-        "Pathetic, useless, complete waste of time",
-        "Miserable failure, nothing worked properly",
-        "Very bad quality, extremely dissatisfied",
-        "Broken, defective, and impossible to fix",
-        "Horrendous experience, regret buying this",
-        "Inferior quality with terrible support team",
-        "Complete disaster, avoid this product please",
-    ]
-
-    texts  = positive_texts + negative_texts
-    labels = [1] * len(positive_texts) + [0] * len(negative_texts)
-
-    vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))
-    X = vectorizer.fit_transform(texts)
-    model = LogisticRegression(max_iter=500, C=1.0, random_state=42)
-    model.fit(X, labels)
-
-    class_names = ["negative", "positive"]
-    result = (model, vectorizer, class_names)
+    result = (predict_fn, class_names)
     _model_cache[key] = result
     return result
 
 
 def get_text_model(model_id: str):
-    """Return (model, vectorizer, class_names)."""
-    if model_id == "newsgroups":
+    """Return (predict_fn, class_names).
+    predict_fn(texts: list[str]) -> np.ndarray of shape (n, n_classes)
+    """
+    if model_id == "sentiment":
+        return _load_hf_sentiment()
+    elif model_id == "newsgroups":
         return _load_text_newsgroups()
-    elif model_id == "sentiment":
-        return _load_text_sentiment()
     else:
         raise ValueError(f"Unknown text model: {model_id!r}")
 
