@@ -4,13 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LIME Explainer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
   <!-- ── Header ── -->
   <header>
     <div class="logo">
-      <span class="logo-icon">◈</span>
+      <img src="/static/favicon.svg" class="logo-img" alt="LIME" />
       <span class="logo-text">LIME <span class="accent">Explainer</span></span>
     </div>
     <p class="tagline">Local Interpretable Model-agnostic Explanations — real LIME, real models, real insights</p>
@@ -45,7 +49,7 @@
                 <input type="radio" name="text-model" value="sentiment" checked hidden />
                 <div class="rc-icon">🤖</div>
                 <div class="rc-title">Sentiment</div>
-                <div class="rc-desc">Logistic Regression + TF-IDF</div>
+                <div class="rc-desc">DistilBERT · SST-2 fine-tuned</div>
               </label>
               <label class="radio-card" data-value="newsgroups">
                 <input type="radio" name="text-model" value="newsgroups" hidden />
@@ -95,7 +99,7 @@
           </div>
 
           <button class="btn-primary" id="explain-text-btn" data-label=" Explain">
-            <span class="btn-spinner hidden" id="text-spinner">⟳</span>
+            <span class="btn-spinner hidden" id="text-spinner"></span>
              Explain
           </button>
         </div>
@@ -107,7 +111,7 @@
           </div>
           <div id="text-results" class="hidden">
             <div class="pred-badge-row" id="text-pred-badges"></div>
-            <img id="text-lime-chart" class="lime-chart" src="" alt="LIME chart" />
+            <div class="chart-wrap"><img id="text-lime-chart" class="lime-chart" src="" alt="" /></div>
             <div class="explanation-section">
               <h3>Top Features</h3>
               <div id="text-feature-table"></div>
@@ -135,7 +139,7 @@
             <button class="btn-example" id="tabular-randomize-btn">Randomize values</button>
           </div>
           <button class="btn-primary" id="explain-tabular-btn" data-label=" Explain">
-            <span class="btn-spinner hidden" id="tabular-spinner">⟳</span>
+            <span class="btn-spinner hidden" id="tabular-spinner"></span>
              Explain
           </button>
         </div>
@@ -147,7 +151,7 @@
           </div>
           <div id="tabular-results" class="hidden">
             <div class="pred-badge-row" id="tabular-pred-badges"></div>
-            <img id="tabular-lime-chart" class="lime-chart" src="" alt="LIME chart" />
+            <div class="chart-wrap"><img id="tabular-lime-chart" class="lime-chart" src="" alt="" /></div>
             <div class="explanation-section">
               <h3>Feature Contributions</h3>
               <div id="tabular-feature-table"></div>
@@ -207,7 +211,7 @@
           </div>
 
           <button class="btn-primary" id="explain-image-btn" data-label=" Explain Image">
-            <span class="btn-spinner hidden" id="image-spinner">⟳</span>
+            <span class="btn-spinner hidden" id="image-spinner"></span>
              Explain Image
           </button>
         </div>
@@ -221,7 +225,7 @@
           </div>
           <div id="image-results" class="hidden">
             <div class="pred-badge-row" id="image-pred-badges"></div>
-            <img id="image-lime-chart" class="lime-chart" src="" alt="LIME image chart" style="width:100%" />
+            <div class="chart-wrap"><img id="image-lime-chart" class="lime-chart" src="" alt="" /></div>
             <div class="image-legend">
               <span class="legend-dot green"></span> Supports prediction &nbsp;
               <span class="legend-dot red"></span> Works against prediction &nbsp;
