@@ -40,74 +40,99 @@
     <section id="tab-text" class="tab-content active">
       <div class="two-col">
         <div class="panel input-panel">
-          <h2>Configure</h2>
+          <div class="panel-header"><h2>Configure</h2></div>
+          <div class="panel-body">
 
-          <div class="field-group">
-            <label>Model</label>
-            <div class="radio-cards" id="text-model-cards">
-              <label class="radio-card active" data-value="sentiment">
-                <input type="radio" name="text-model" value="sentiment" checked hidden />
-                <div class="rc-icon">🤖</div>
-                <div class="rc-title">Sentiment</div>
-                <div class="rc-desc">DistilBERT · SST-2 fine-tuned</div>
-              </label>
-              <label class="radio-card" data-value="newsgroups">
-                <input type="radio" name="text-model" value="newsgroups" hidden />
-                <div class="rc-icon">📰</div>
-                <div class="rc-title">Newsgroups</div>
-                <div class="rc-desc">20NG Topic Classifier</div>
-              </label>
-              <label class="radio-card" data-value="openai">
-                <input type="radio" name="text-model" value="openai" hidden />
-                <div class="rc-icon">⚡</div>
-                <div class="rc-title">GPT-4o-mini</div>
-                <div class="rc-desc">Any task via OpenAI</div>
-              </label>
-            </div>
-          </div>
-
-          <div id="openai-config" class="openai-config hidden">
             <div class="field-group">
-              <label for="openai-key">OpenAI API Key</label>
-              <div class="key-row">
-                <input type="password" id="openai-key" placeholder="sk-..." autocomplete="off" />
-                <button id="validate-key-btn" class="btn-sm">Validate</button>
-              </div>
-              <span id="key-status" class="key-status"></span>
-            </div>
-            <div class="field-group">
-              <label for="task-desc">Task Description</label>
-              <input type="text" id="task-desc" value="sentiment analysis" placeholder="e.g. spam detection…" />
-            </div>
-            <div class="field-group">
-              <label for="class-names">Class Names <span class="hint">(comma-separated)</span></label>
-              <input type="text" id="class-names" value="negative, positive" placeholder="e.g. negative, positive" />
-            </div>
-            <div class="field-group">
-              <label for="n-samples-text">LIME Samples <span class="hint">— more = better accuracy, more API calls</span></label>
-              <div class="slider-row">
-                <input type="range" id="n-samples-text" min="50" max="300" step="25" value="100" />
-                <span id="n-samples-text-val" class="slider-val">100</span>
+              <label>Model</label>
+              <div class="radio-cards" id="text-model-cards">
+                <label class="radio-card active" data-value="sentiment">
+                  <input type="radio" name="text-model" value="sentiment" checked hidden />
+                  <div class="rc-icon">🤖</div>
+                  <div class="rc-title">Sentiment</div>
+                  <div class="rc-desc">DistilBERT · SST-2 fine-tuned</div>
+                </label>
+                <label class="radio-card" data-value="newsgroups">
+                  <input type="radio" name="text-model" value="newsgroups" hidden />
+                  <div class="rc-icon">📰</div>
+                  <div class="rc-title">Newsgroups</div>
+                  <div class="rc-desc">20NG Topic Classifier</div>
+                </label>
+                <label class="radio-card" data-value="openai">
+                  <input type="radio" name="text-model" value="openai" hidden />
+                  <div class="rc-icon">⚡</div>
+                  <div class="rc-title">GPT-4o-mini</div>
+                  <div class="rc-desc">Any task via OpenAI</div>
+                </label>
               </div>
             </div>
-          </div>
 
-          <div class="field-group">
-            <label for="input-text">Input Text</label>
-            <textarea id="input-text" rows="5" placeholder="Type or paste any text here…"></textarea>
-            <button class="btn-example" id="load-example-btn">Load example text</button>
-          </div>
+            <div id="openai-config" class="openai-config hidden">
+              <div class="field-group">
+                <label for="openai-key">OpenAI API Key</label>
+                <div class="key-row">
+                  <input type="password" id="openai-key" placeholder="sk-..." autocomplete="off" />
+                  <button id="validate-key-btn" class="btn-sm">Validate</button>
+                </div>
+                <span id="key-status" class="key-status"></span>
+              </div>
+              <div class="field-group">
+                <label for="task-desc">Task Description</label>
+                <input type="text" id="task-desc" value="sentiment analysis" placeholder="e.g. spam detection…" />
+              </div>
+              <div class="field-group">
+                <label for="class-names">Class Names <span class="hint">(comma-separated)</span></label>
+                <input type="text" id="class-names" value="negative, positive" placeholder="e.g. negative, positive" />
+              </div>
+              <div class="field-group">
+                <label for="n-samples-text">LIME Samples <span class="hint">— more = better accuracy, more API calls</span></label>
+                <div class="slider-row">
+                  <input type="range" id="n-samples-text" min="50" max="300" step="25" value="100" />
+                  <span id="n-samples-text-val" class="slider-val">100</span>
+                </div>
+              </div>
+            </div>
 
-          <button class="btn-primary" id="explain-text-btn" data-label=" Explain">
-            <span class="btn-spinner hidden" id="text-spinner"></span>
-             Explain
-          </button>
+            <div class="field-group">
+              <label for="input-text">Input Text</label>
+              <textarea id="input-text" rows="5" placeholder="Type or paste any text here…"></textarea>
+              <button class="btn-example" id="load-example-btn">Load example text</button>
+            </div>
+
+            <button class="btn-primary" id="explain-text-btn" data-label=" Explain">
+              <span class="btn-spinner hidden" id="text-spinner"></span>
+               Explain
+            </button>
+
+          </div>
         </div>
 
         <div class="panel result-panel">
           <div class="result-placeholder" id="text-placeholder">
-            <div class="placeholder-icon">◈</div>
-            <p>Run an explanation to see results</p>
+            <div class="empty-state">
+              <div class="empty-icon-wrap"><span class="tab-icon">✦</span></div>
+              <h3>Text Explanation</h3>
+              <p>Enter text and click <strong>Explain</strong> to see which words drove the prediction.</p>
+              <div class="empty-preview-row">
+                <div class="empty-preview-card">
+                  <div class="epc-label">Prediction</div>
+                  <div class="epc-value positive-text">positive 94%</div>
+                </div>
+                <div class="empty-preview-card">
+                  <div class="epc-label">Top word</div>
+                  <div class="epc-value">"fantastic"</div>
+                </div>
+                <div class="empty-preview-card">
+                  <div class="epc-label">Words scored</div>
+                  <div class="epc-value">15</div>
+                </div>
+              </div>
+              <div class="empty-steps">
+                <div class="empty-step"><span class="step-num">1</span><span>LIME perturbs your text ~150 times</span></div>
+                <div class="empty-step"><span class="step-num">2</span><span>Model scores each variant</span></div>
+                <div class="empty-step"><span class="step-num">3</span><span>Key words are ranked by impact</span></div>
+              </div>
+            </div>
           </div>
           <div id="text-results" class="hidden">
             <div class="pred-badge-row" id="text-pred-badges"></div>
@@ -127,27 +152,53 @@
     <section id="tab-tabular" class="tab-content hidden">
       <div class="two-col">
         <div class="panel input-panel">
-          <h2>Configure</h2>
-          <div class="field-group">
-            <label>Dataset / Model</label>
-            <select id="tabular-model-select"></select>
-            <p class="model-desc" id="tabular-model-desc"></p>
+          <div class="panel-header"><h2>Configure</h2></div>
+          <div class="panel-body">
+
+            <div class="field-group">
+              <label>Dataset / Model</label>
+              <select id="tabular-model-select"></select>
+              <p class="model-desc" id="tabular-model-desc"></p>
+            </div>
+            <div class="field-group">
+              <h3 style="margin:0 0 12px;font-size:1rem;color:var(--accent)">Feature Values</h3>
+              <div id="tabular-feature-inputs" class="feature-grid"></div>
+              <button class="btn-example" id="tabular-randomize-btn">Randomize values</button>
+            </div>
+            <button class="btn-primary" id="explain-tabular-btn" data-label=" Explain">
+              <span class="btn-spinner hidden" id="tabular-spinner"></span>
+               Explain
+            </button>
+
           </div>
-          <div class="field-group">
-            <h3 style="margin:0 0 12px;font-size:1rem;color:var(--accent)">Feature Values</h3>
-            <div id="tabular-feature-inputs" class="feature-grid"></div>
-            <button class="btn-example" id="tabular-randomize-btn">Randomize values</button>
-          </div>
-          <button class="btn-primary" id="explain-tabular-btn" data-label=" Explain">
-            <span class="btn-spinner hidden" id="tabular-spinner"></span>
-             Explain
-          </button>
         </div>
 
         <div class="panel result-panel">
           <div class="result-placeholder" id="tabular-placeholder">
-            <div class="placeholder-icon">⊞</div>
-            <p>Run an explanation to see results</p>
+            <div class="empty-state">
+              <div class="empty-icon-wrap"><span class="tab-icon">⊞</span></div>
+              <h3>Tabular Explanation</h3>
+              <p>Set feature values and click <strong>Explain</strong> to see which features influenced the prediction.</p>
+              <div class="empty-preview-row">
+                <div class="empty-preview-card">
+                  <div class="epc-label">Prediction</div>
+                  <div class="epc-value positive-text">versicolor</div>
+                </div>
+                <div class="empty-preview-card">
+                  <div class="epc-label">Confidence</div>
+                  <div class="epc-value">87%</div>
+                </div>
+                <div class="empty-preview-card">
+                  <div class="epc-label">Features ranked</div>
+                  <div class="epc-value">4</div>
+                </div>
+              </div>
+              <div class="empty-steps">
+                <div class="empty-step"><span class="step-num">1</span><span>LIME samples ~500 nearby data points</span></div>
+                <div class="empty-step"><span class="step-num">2</span><span>Fits a local linear model</span></div>
+                <div class="empty-step"><span class="step-num">3</span><span>Features ranked by coefficient weight</span></div>
+              </div>
+            </div>
           </div>
           <div id="tabular-results" class="hidden">
             <div class="pred-badge-row" id="tabular-pred-badges"></div>
@@ -167,61 +218,85 @@
     <section id="tab-image" class="tab-content hidden">
       <div class="two-col">
         <div class="panel input-panel">
-          <h2>Configure</h2>
+          <div class="panel-header"><h2>Configure</h2></div>
+          <div class="panel-body">
 
-          <div class="field-group">
-            <label>CNN Model</label>
-            <div class="radio-cards cnn-cards" id="cnn-model-cards">
-              <!-- populated by JS -->
+            <div class="field-group">
+              <label>CNN Model</label>
+              <div class="radio-cards cnn-cards" id="cnn-model-cards">
+                <!-- populated by JS -->
+              </div>
             </div>
-          </div>
 
-          <div class="field-group">
-            <label>Upload Image</label>
-            <div class="drop-zone" id="drop-zone">
-              <div class="drop-icon">🖼</div>
-              <p class="drop-text">Drag & drop an image here<br/>or <u>click to browse</u></p>
-              <p class="drop-hint">JPG · PNG · WEBP — any everyday photo works great</p>
-              <input type="file" id="image-input" accept="image/*" hidden />
+            <div class="field-group">
+              <label>Upload Image</label>
+              <div class="drop-zone" id="drop-zone">
+                <div class="drop-icon">🖼</div>
+                <p class="drop-text">Drag &amp; drop an image here<br/>or <u>click to browse</u></p>
+                <p class="drop-hint">JPG · PNG · WEBP — any everyday photo works great</p>
+                <input type="file" id="image-input" accept="image/*" hidden />
+              </div>
+              <div id="image-preview-wrap" class="image-preview-wrap hidden">
+                <img id="image-preview" class="image-preview" src="" alt="preview" />
+                <button class="btn-example" id="clear-image-btn">✕ Remove image</button>
+              </div>
             </div>
-            <div id="image-preview-wrap" class="image-preview-wrap hidden">
-              <img id="image-preview" class="image-preview" src="" alt="preview" />
-              <button class="btn-example" id="clear-image-btn">✕ Remove image</button>
+
+            <div class="field-group">
+              <label>LIME Samples <span class="hint">— more = sharper explanation (~30s at 200)</span></label>
+              <div class="slider-row">
+                <input type="range" id="n-samples-image" min="50" max="500" step="50" value="200" />
+                <span id="n-samples-image-val" class="slider-val">200</span>
+              </div>
             </div>
-          </div>
 
-          <div class="field-group">
-            <label>LIME Samples <span class="hint">— more = sharper explanation (~30s at 200)</span></label>
-            <div class="slider-row">
-              <input type="range" id="n-samples-image" min="50" max="500" step="50" value="200" />
-              <span id="n-samples-image-val" class="slider-val">200</span>
+            <div class="field-group">
+              <label>Regions to Highlight <span class="hint">— superpixel clusters shown</span></label>
+              <div class="slider-row">
+                <input type="range" id="num-features-image" min="2" max="15" step="1" value="6" />
+                <span id="num-features-image-val" class="slider-val">6</span>
+              </div>
             </div>
-          </div>
 
-          <div class="field-group">
-            <label>Regions to Highlight <span class="hint">— superpixel clusters shown</span></label>
-            <div class="slider-row">
-              <input type="range" id="num-features-image" min="2" max="15" step="1" value="6" />
-              <span id="num-features-image-val" class="slider-val">6</span>
+            <div class="info-box">
+              <strong>How LIME explains images:</strong> It randomly masks parts of your image hundreds of times, asks the CNN to classify each version, then identifies which regions consistently pushed the prediction. Green = the CNN used this region as evidence. Red = this region confused it.
             </div>
-          </div>
 
-          <div class="info-box">
-            <strong>How LIME explains images:</strong> It randomly masks parts of your image hundreds of times, asks the CNN to classify each version, then identifies which regions consistently pushed the prediction. Green = the CNN used this region as evidence. Red = this region confused it.
-          </div>
+            <button class="btn-primary" id="explain-image-btn" data-label=" Explain Image">
+              <span class="btn-spinner hidden" id="image-spinner"></span>
+               Explain Image
+            </button>
 
-          <button class="btn-primary" id="explain-image-btn" data-label=" Explain Image">
-            <span class="btn-spinner hidden" id="image-spinner"></span>
-             Explain Image
-          </button>
+          </div>
         </div>
 
         <!-- Results -->
         <div class="panel result-panel">
           <div class="result-placeholder" id="image-placeholder">
-            <div class="placeholder-icon">🖼</div>
-            <p>Upload an image and click Explain</p>
-            <p style="font-size:.8rem;color:var(--muted);margin-top:8px">Try a dog, cat, bird, car, plant — any everyday photo</p>
+            <div class="empty-state">
+              <div class="empty-icon-wrap"><span class="tab-icon">🖼</span></div>
+              <h3>CNN Image Explanation</h3>
+              <p>Upload a photo and click <strong>Explain</strong> to see which regions the model focused on.</p>
+              <div class="empty-preview-row">
+                <div class="empty-preview-card">
+                  <div class="epc-label">Original</div>
+                  <div class="epc-value">→ Your image</div>
+                </div>
+                <div class="empty-preview-card">
+                  <div class="epc-label epc-positive">Green regions</div>
+                  <div class="epc-value">Support prediction</div>
+                </div>
+                <div class="empty-preview-card">
+                  <div class="epc-label epc-negative">Red regions</div>
+                  <div class="epc-value">Work against it</div>
+                </div>
+              </div>
+              <div class="empty-steps">
+                <div class="empty-step"><span class="step-num">1</span><span>LIME masks superpixels ~200 times</span></div>
+                <div class="empty-step"><span class="step-num">2</span><span>CNN classifies each masked version</span></div>
+                <div class="empty-step"><span class="step-num">3</span><span>Regions ranked — 4-panel result shown</span></div>
+              </div>
+            </div>
           </div>
           <div id="image-results" class="hidden">
             <div class="pred-badge-row" id="image-pred-badges"></div>
@@ -231,7 +306,7 @@
               <span class="legend-dot red"></span> Works against prediction &nbsp;
               <span class="legend-dot yellow"></span> Heatmap: warm supports, cool hurts
             </div>
-            <div class="explanation-section" style="margin-top:16px">
+            <div class="explanation-section">
               <h3>Top-5 Predictions (ImageNet)</h3>
               <div id="image-top5-table"></div>
             </div>
