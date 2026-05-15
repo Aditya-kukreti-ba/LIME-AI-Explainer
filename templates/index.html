@@ -12,64 +12,78 @@
 </head>
 <body>
 
-  <!-- ── Hero ── -->
-  <section id="hero">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <div class="hero-badge">Open Source · Real Models · No Black Boxes</div>
-        <h1 class="hero-title">Understand<br>Any AI Decision</h1>
-        <p class="hero-desc">LIME reveals exactly why your model made its prediction — word by word, feature by feature, pixel by pixel. No guesswork.</p>
-        <a href="#app" class="hero-cta">Start Explaining <span class="hero-cta-arrow">→</span></a>
-        <div class="hero-pills">
-          <span class="hero-pill">✦ Text &amp; Sentiment</span>
-          <span class="hero-pill">⊞ Tabular Data</span>
-          <span class="hero-pill">🖼 CNN Images</span>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="blob-wrap">
-          <div class="blob blob-a"></div>
-          <div class="blob blob-b"></div>
-          <div class="blob blob-c"></div>
-        </div>
-      </div>
+  <!-- ══════════════════════════════════════════════════
+       SHARED FIXED NAV  (hidden on hero, shown on app pages)
+  ══════════════════════════════════════════════════ -->
+  <nav class="app-nav" id="app-nav">
+    <button class="nav-home-btn" id="nav-home-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8L8 3L13 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 3V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Home
+    </button>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-page="text">
+        <span class="nav-tab-icon">✦</span> Text
+      </button>
+      <button class="nav-tab" data-page="tabular">
+        <span class="nav-tab-icon">⊞</span> Tabular
+      </button>
+      <button class="nav-tab" data-page="image">
+        <span class="nav-tab-icon">🖼</span> Image
+      </button>
     </div>
-    <a href="#app" class="hero-scroll">
-      <span>Scroll to explore</span>
-      <div class="hero-scroll-arrow"></div>
-    </a>
+
+    <div class="nav-brand">
+      <img src="/static/favicon.svg" class="nav-logo" alt="" />
+      <span>LIME <span class="accent">Explainer</span></span>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════
+       PAGE 1 — HERO
+  ══════════════════════════════════════════════════ -->
+  <section class="page" id="page-hero" data-state="active">
+    <div class="page-body">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <div class="hero-badge">Open Source · Real Models · No Black Boxes</div>
+          <h1 class="hero-title">Understand<br>Any AI Decision</h1>
+          <p class="hero-desc">LIME reveals exactly why your model made its prediction — word by word, feature by feature, pixel by pixel. No guesswork.</p>
+          <button class="hero-cta" id="hero-cta-btn">
+            Start Explaining <span class="hero-cta-arrow">→</span>
+          </button>
+          <div class="hero-pills">
+            <button class="hero-pill" data-page="text">✦ Text &amp; Sentiment</button>
+            <button class="hero-pill" data-page="tabular">⊞ Tabular Data</button>
+            <button class="hero-pill" data-page="image">🖼 CNN Images</button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="blob-wrap">
+            <div class="blob blob-a"></div>
+            <div class="blob blob-b"></div>
+            <div class="blob blob-c"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="hero-scroll" id="hero-scroll-btn">
+        <span>Explore</span>
+        <div class="hero-scroll-arrow"></div>
+      </button>
+    </div>
   </section>
 
-  <!-- ── App ── -->
-  <div id="app">
+  <!-- ══════════════════════════════════════════════════
+       PAGE 2 — TEXT EXPLANATION
+  ══════════════════════════════════════════════════ -->
+  <section class="page" id="page-text" data-state="right">
+    <div class="page-body">
+      <div class="page-header">
+        <h1 class="page-title">Text Explanation</h1>
+        <p class="page-subtitle">LIME scores every word's contribution to the prediction.</p>
+      </div>
 
-  <!-- ── Header ── -->
-  <header>
-    <div class="logo">
-      <img src="/static/favicon.svg" class="logo-img" alt="LIME" />
-      <span class="logo-text">LIME <span class="accent">Explainer</span></span>
-    </div>
-    <p class="tagline">Local Interpretable Model-agnostic Explanations — real LIME, real models, real insights</p>
-  </header>
-
-  <main>
-    <!-- ── Mode tabs ── -->
-    <div class="tabs">
-      <button class="tab active" data-tab="text">
-        <span class="tab-icon">✦</span> Text Explanation
-      </button>
-      <button class="tab" data-tab="tabular">
-        <span class="tab-icon">⊞</span> Tabular Explanation
-      </button>
-      <button class="tab" data-tab="image">
-        <span class="tab-icon">🖼</span> CNN Image Explanation
-      </button>
-    </div>
-
-    <!-- ════════════════════════════════════════════════════════ -->
-    <!-- TEXT TAB                                                 -->
-    <!-- ════════════════════════════════════════════════════════ -->
-    <section id="tab-text" class="tab-content active">
       <div class="two-col">
         <div class="panel input-panel">
           <div class="panel-header"><h2>Configure</h2></div>
@@ -82,19 +96,19 @@
                   <input type="radio" name="text-model" value="sentiment" checked hidden />
                   <div class="rc-icon">🤖</div>
                   <div class="rc-title">Sentiment</div>
-                  <div class="rc-desc">DistilBERT · SST-2 fine-tuned</div>
+                  <div class="rc-desc">DistilBERT · SST-2</div>
                 </label>
                 <label class="radio-card" data-value="newsgroups">
                   <input type="radio" name="text-model" value="newsgroups" hidden />
                   <div class="rc-icon">📰</div>
                   <div class="rc-title">Newsgroups</div>
-                  <div class="rc-desc">20NG Topic Classifier</div>
+                  <div class="rc-desc">20NG Topics</div>
                 </label>
                 <label class="radio-card" data-value="openai">
                   <input type="radio" name="text-model" value="openai" hidden />
                   <div class="rc-icon">⚡</div>
                   <div class="rc-title">GPT-4o-mini</div>
-                  <div class="rc-desc">Any task via OpenAI</div>
+                  <div class="rc-desc">Any task via API</div>
                 </label>
               </div>
             </div>
@@ -114,10 +128,10 @@
               </div>
               <div class="field-group">
                 <label for="class-names">Class Names <span class="hint">(comma-separated)</span></label>
-                <input type="text" id="class-names" value="negative, positive" placeholder="e.g. negative, positive" />
+                <input type="text" id="class-names" value="negative, positive" />
               </div>
               <div class="field-group">
-                <label for="n-samples-text">LIME Samples <span class="hint">— more = better accuracy, more API calls</span></label>
+                <label for="n-samples-text">LIME Samples <span class="hint">— more = better accuracy</span></label>
                 <div class="slider-row">
                   <input type="range" id="n-samples-text" min="50" max="300" step="25" value="100" />
                   <span id="n-samples-text-val" class="slider-val">100</span>
@@ -142,7 +156,7 @@
         <div class="panel result-panel">
           <div class="result-placeholder" id="text-placeholder">
             <div class="empty-state">
-              <div class="empty-icon-wrap"><span class="tab-icon">✦</span></div>
+              <div class="empty-icon-wrap"><span>✦</span></div>
               <h3>Text Explanation</h3>
               <p>Enter text and click <strong>Explain</strong> to see which words drove the prediction.</p>
               <div class="empty-preview-row">
@@ -176,12 +190,19 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ════════════════════════════════════════════════════════ -->
-    <!-- TABULAR TAB                                              -->
-    <!-- ════════════════════════════════════════════════════════ -->
-    <section id="tab-tabular" class="tab-content hidden">
+  <!-- ══════════════════════════════════════════════════
+       PAGE 3 — TABULAR EXPLANATION
+  ══════════════════════════════════════════════════ -->
+  <section class="page" id="page-tabular" data-state="right">
+    <div class="page-body">
+      <div class="page-header">
+        <h1 class="page-title">Tabular Explanation</h1>
+        <p class="page-subtitle">LIME ranks each feature by its contribution to the prediction.</p>
+      </div>
+
       <div class="two-col">
         <div class="panel input-panel">
           <div class="panel-header"><h2>Configure</h2></div>
@@ -193,7 +214,7 @@
               <p class="model-desc" id="tabular-model-desc"></p>
             </div>
             <div class="field-group">
-              <h3 style="margin:0 0 12px;font-size:1rem;color:var(--accent)">Feature Values</h3>
+              <label>Feature Values</label>
               <div id="tabular-feature-inputs" class="feature-grid"></div>
               <button class="btn-example" id="tabular-randomize-btn">Randomize values</button>
             </div>
@@ -208,7 +229,7 @@
         <div class="panel result-panel">
           <div class="result-placeholder" id="tabular-placeholder">
             <div class="empty-state">
-              <div class="empty-icon-wrap"><span class="tab-icon">⊞</span></div>
+              <div class="empty-icon-wrap"><span>⊞</span></div>
               <h3>Tabular Explanation</h3>
               <p>Set feature values and click <strong>Explain</strong> to see which features influenced the prediction.</p>
               <div class="empty-preview-row">
@@ -242,12 +263,19 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ════════════════════════════════════════════════════════ -->
-    <!-- IMAGE TAB                                                -->
-    <!-- ════════════════════════════════════════════════════════ -->
-    <section id="tab-image" class="tab-content hidden">
+  <!-- ══════════════════════════════════════════════════
+       PAGE 4 — CNN IMAGE EXPLANATION
+  ══════════════════════════════════════════════════ -->
+  <section class="page" id="page-image" data-state="right">
+    <div class="page-body">
+      <div class="page-header">
+        <h1 class="page-title">CNN Image Explanation</h1>
+        <p class="page-subtitle">LIME highlights which image regions drove the CNN's prediction.</p>
+      </div>
+
       <div class="two-col">
         <div class="panel input-panel">
           <div class="panel-header"><h2>Configure</h2></div>
@@ -255,9 +283,7 @@
 
             <div class="field-group">
               <label>CNN Model</label>
-              <div class="radio-cards cnn-cards" id="cnn-model-cards">
-                <!-- populated by JS -->
-              </div>
+              <div class="radio-cards cnn-cards" id="cnn-model-cards"></div>
             </div>
 
             <div class="field-group">
@@ -265,7 +291,7 @@
               <div class="drop-zone" id="drop-zone">
                 <div class="drop-icon">🖼</div>
                 <p class="drop-text">Drag &amp; drop an image here<br/>or <u>click to browse</u></p>
-                <p class="drop-hint">JPG · PNG · WEBP — any everyday photo works great</p>
+                <p class="drop-hint">JPG · PNG · WEBP — any photo works</p>
                 <input type="file" id="image-input" accept="image/*" hidden />
               </div>
               <div id="image-preview-wrap" class="image-preview-wrap hidden">
@@ -275,7 +301,7 @@
             </div>
 
             <div class="field-group">
-              <label>LIME Samples <span class="hint">— more = sharper explanation (~30s at 200)</span></label>
+              <label>LIME Samples <span class="hint">— more = sharper (~30s at 200)</span></label>
               <div class="slider-row">
                 <input type="range" id="n-samples-image" min="50" max="500" step="50" value="200" />
                 <span id="n-samples-image-val" class="slider-val">200</span>
@@ -283,7 +309,7 @@
             </div>
 
             <div class="field-group">
-              <label>Regions to Highlight <span class="hint">— superpixel clusters shown</span></label>
+              <label>Regions to Highlight <span class="hint">— superpixels shown</span></label>
               <div class="slider-row">
                 <input type="range" id="num-features-image" min="2" max="15" step="1" value="6" />
                 <span id="num-features-image-val" class="slider-val">6</span>
@@ -291,7 +317,7 @@
             </div>
 
             <div class="info-box">
-              <strong>How LIME explains images:</strong> It randomly masks parts of your image hundreds of times, asks the CNN to classify each version, then identifies which regions consistently pushed the prediction. Green = the CNN used this region as evidence. Red = this region confused it.
+              <strong>How it works:</strong> LIME masks parts of your image hundreds of times, asks the CNN to classify each, then finds which regions consistently drove the prediction.
             </div>
 
             <button class="btn-primary" id="explain-image-btn" data-label=" Explain Image">
@@ -302,17 +328,16 @@
           </div>
         </div>
 
-        <!-- Results -->
         <div class="panel result-panel">
           <div class="result-placeholder" id="image-placeholder">
             <div class="empty-state">
-              <div class="empty-icon-wrap"><span class="tab-icon">🖼</span></div>
+              <div class="empty-icon-wrap"><span>🖼</span></div>
               <h3>CNN Image Explanation</h3>
               <p>Upload a photo and click <strong>Explain</strong> to see which regions the model focused on.</p>
               <div class="empty-preview-row">
                 <div class="empty-preview-card">
                   <div class="epc-label">Original</div>
-                  <div class="epc-value">→ Your image</div>
+                  <div class="epc-value">Your image</div>
                 </div>
                 <div class="empty-preview-card">
                   <div class="epc-label epc-positive">Green regions</div>
@@ -336,7 +361,7 @@
             <div class="image-legend">
               <span class="legend-dot green"></span> Supports prediction &nbsp;
               <span class="legend-dot red"></span> Works against prediction &nbsp;
-              <span class="legend-dot yellow"></span> Heatmap: warm supports, cool hurts
+              <span class="legend-dot yellow"></span> Heatmap: warm = supports, cool = hurts
             </div>
             <div class="explanation-section">
               <h3>Top-5 Predictions (ImageNet)</h3>
@@ -345,27 +370,16 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-  </main>
-
+  <!-- Error toast (global) -->
   <div id="error-toast" class="error-toast hidden">
     <span id="error-toast-msg"></span>
     <button onclick="document.getElementById('error-toast').classList.add('hidden')">✕</button>
   </div>
 
-  </div><!-- /#app -->
-
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  <script>
-    document.querySelector('.hero-cta').addEventListener('click', e => {
-      e.preventDefault();
-      document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-    });
-    document.querySelector('.hero-scroll').addEventListener('click', e => {
-      e.preventDefault();
-      document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-    });
-  </script>
+  <script src="{{ url_for('static', filename='js/router.js') }}"></script>
 </body>
 </html>

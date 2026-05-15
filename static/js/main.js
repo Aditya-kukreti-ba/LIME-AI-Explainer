@@ -31,14 +31,7 @@ function setLoading(spinner, btn, loading) {
 // Tab switching
 // ════════════════════════════════════════════════════════
 
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    document.querySelectorAll(".tab-content").forEach(c => hide(c));
-    tab.classList.add("active");
-    show($(`tab-${tab.dataset.tab}`));
-  });
-});
+// Tab switching is handled by router.js
 
 // ════════════════════════════════════════════════════════
 // TEXT TAB
