@@ -11,6 +11,38 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
+
+  <!-- ── Hero ── -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge">Open Source · Real Models · No Black Boxes</div>
+        <h1 class="hero-title">Understand<br>Any AI Decision</h1>
+        <p class="hero-desc">LIME reveals exactly why your model made its prediction — word by word, feature by feature, pixel by pixel. No guesswork.</p>
+        <a href="#app" class="hero-cta">Start Explaining <span class="hero-cta-arrow">→</span></a>
+        <div class="hero-pills">
+          <span class="hero-pill">✦ Text &amp; Sentiment</span>
+          <span class="hero-pill">⊞ Tabular Data</span>
+          <span class="hero-pill">🖼 CNN Images</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="blob-wrap">
+          <div class="blob blob-a"></div>
+          <div class="blob blob-b"></div>
+          <div class="blob blob-c"></div>
+        </div>
+      </div>
+    </div>
+    <a href="#app" class="hero-scroll">
+      <span>Scroll to explore</span>
+      <div class="hero-scroll-arrow"></div>
+    </a>
+  </section>
+
+  <!-- ── App ── -->
+  <div id="app">
+
   <!-- ── Header ── -->
   <header>
     <div class="logo">
@@ -322,6 +354,18 @@
     <button onclick="document.getElementById('error-toast').classList.add('hidden')">✕</button>
   </div>
 
+  </div><!-- /#app -->
+
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+    document.querySelector('.hero-cta').addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.querySelector('.hero-scroll').addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
